@@ -1,15 +1,12 @@
 $(function() {
     var $audio = $('#audio-element')[0];
-    var playlist = [];
+    var playlist = window.MUSIC_PLAYLIST || [];
     var currentTrackIndex = 0;
     var isPlaying = false;
 
-    $.getJSON('assets/music/playlist.json', function(data) {
-        playlist = data;
-        if (playlist.length > 0) {
-            loadTrack(currentTrackIndex);
-        }
-    });
+    if (playlist.length > 0) {
+        loadTrack(currentTrackIndex);
+    }
 
     function loadTrack(index) {
         $audio.src = playlist[index].url;
