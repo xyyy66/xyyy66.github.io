@@ -194,10 +194,11 @@ input, select, textarea {
 
 	#intro p.bio {
 		font-family: "Merriweather", serif;
-		font-size: 0.9em;
-		color: rgba(255, 255, 255, 0.75);
-		line-height: 1.9;
-		letter-spacing: 0.02em;
+		font-style: italic;
+		font-size: 1.05em;
+		color: rgba(255, 255, 255, 0.85);
+		line-height: 1.8;
+		letter-spacing: 0.03em;
 		max-width: 80%;
 		margin: 0 auto;
 	}
