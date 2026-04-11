@@ -85,6 +85,36 @@
 								</div>
 							</article>
 
+						<!-- Music -->
+							<article id="music" class="slide style2 center">
+								<img src="images/pic03.jpg" alt="" data-position="center" />
+								<div class="inner">
+									<h2>My Music</h2>
+									<p>Music is the moonlight in the gloomy night of life.</p>
+									<div class="music-player">
+										<div class="track-info">
+											<h3 id="track-name">Loading...</h3>
+										</div>
+										<audio id="audio-element"></audio>
+										<div class="controls">
+											<button id="prev-btn" class="button small icon fa-backward"></button>
+											<button id="play-btn" class="button primary icon fa-play"></button>
+											<button id="next-btn" class="button small icon fa-forward"></button>
+										</div>
+										<div class="progress-container" id="progress-container">
+											<div class="progress-bar" id="progress-bar"></div>
+										</div>
+                                        <div class="time-info">
+                                            <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+                                        </div>
+										<div class="volume-container">
+                                            <i class="icon fa-volume-up"></i>
+											<input type="range" id="volume-slider" min="0" max="1" step="0.01" value="1">
+										</div>
+									</div>
+								</div>
+							</article>
+
 						<!-- Contact -->
 							<article id="contact" class="slide style2 right">
 								<img src="images/p4.jpg" alt="" data-position="center" />
@@ -104,6 +134,7 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="assets/js/music-player.js"></script>
 
 	</body>
 </html>
