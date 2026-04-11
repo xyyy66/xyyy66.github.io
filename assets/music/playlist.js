@@ -1,11 +1,11 @@
 window.MUSIC_PLAYLIST = [
   {
-    "name": "如果声音不记得",
-    "url": "assets/music/如果声音不记得.m4a"
+    "name": "海阔天空",
+    "url": "assets/music/海阔天空.m4a"
   },
   {
-    "name": "One Man's Dream",
-    "url": "assets/music/One Man's Dream.m4a"
+    "name": "光辉岁月",
+    "url": "assets/music/光辉岁月.m4a"
   },
   {
     "name": "反方向的钟",
@@ -28,8 +28,8 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/路小雨.m4a"
   },
   {
-    "name": "Dawn (黎明将至)",
-    "url": "assets/music/Dawn (黎明将至).m4a"
+    "name": "Dawn",
+    "url": "assets/music/Dawn.m4a"
   },
   {
     "name": "我的楼兰",
@@ -84,8 +84,8 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/爱情讯息.m4a"
   },
   {
-    "name": "圣诞快乐劳伦斯先生⧸Merry Christmas Mr.Lawrence",
-    "url": "assets/music/圣诞快乐劳伦斯先生⧸Merry Christmas Mr.Lawrence.m4a"
+    "name": "Merry Christmas Mr.Lawrence",
+    "url": "assets/music/MerryChristmasMrLawrence.m4a"
   },
   {
     "name": "晴天",
@@ -104,8 +104,8 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/乡村路带我回家.m4a"
   },
   {
-    "name": "『4K60FPS HIFI音质 动态歌词』剑心~张杰★听琴声潇潇 该忘的忘不掉 红尘 困住我年少 原谅我藏在心里燎燎的狂傲 去战 面对天地荡浩★",
-    "url": "assets/music/『4K60FPS HIFI音质 动态歌词』剑心~张杰★听琴声潇潇 该忘的忘不掉 红尘 困住我年少 原谅我藏在心里燎燎的狂傲 去战 面对天地荡浩★.m4a"
+    "name": "剑心",
+    "url": "assets/music/剑心.m4a"
   },
   {
     "name": "春娇与志明",
@@ -114,10 +114,6 @@ window.MUSIC_PLAYLIST = [
   {
     "name": "爱江山更爱美人",
     "url": "assets/music/爱江山更爱美人.m4a"
-  },
-  {
-    "name": "海阔天空",
-    "url": "assets/music/海阔天空.m4a"
   },
   {
     "name": "See You Again",
