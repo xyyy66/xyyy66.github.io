@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>深入理解 C++ 传参、值类别与网关模式 - Xu Yan's Blog</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600;900&display=swap" rel="stylesheet">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --bg-color: #f7efdd; /* 米黄色底色 (Beige/Cream) */
+            --text-color: #333333;
+            --link-color: #a87b51;
+            --meta-color: #888888;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Merriweather', 'Noto Serif SC', serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 60px 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .meta {
+            color: var(--meta-color);
+            font-size: 0.9em;
+            font-style: italic;
+        }
+
+        .content h2 {
+            font-size: 1.8em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .content h3 {
+            font-size: 1.4em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .content p {
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .content a {
+            color: var(--link-color);
+            text-decoration: none;
+            border-bottom: 1px dotted var(--link-color);
+            transition: all 0.3s ease;
+        }
+
+        .content a:hover {
+            color: #7a5839;
+            border-bottom: 1px solid #7a5839;
+        }
+
+        /* Code block adjustments */
+        pre[class*="language-"] {
+            border-radius: 8px;
+            margin: 30px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 15px;
+        }
+
+        code[class*="language-"], pre[class*="language-"] {
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 60px;
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #7a5839;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2em;
+            }
+            .container {
+                padding: 40px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>深入理解 C++ 传参、值类别与网关模式</h1>
+            <div class="meta">发布于 2026年04月11日 • 预计阅读时间: 9 分钟</div>
+        </header>
+
+        <div class="content">
+<p>在学习现代 C++ 的过程中，我们经常会被各种指针、引用、值类别（左值/右值）以及参数传递的方式搞得晕头转向。这篇博客整理了我近期关于 C++ 核心概念的学习笔记，希望能够帮助大家理清思路，写出更安全、更语义化的 C++ 代码。</p>
+<h2>1. 传参与所有权语义</h2>
+<p>设计函数参数类型时，最重要的原则是：<strong>准确表达“我到底怎么使用这个对象”</strong>。
+具体来说，我们要区分以下几种情况：
+* 是否只是临时借用一下这个对象？
+* 是否需要接管所有权（Ownership）？
+* 是否想要共享所有权？</p>
+<p>我们来看下面这组对比例子：</p>
+<pre><code class="language-cpp">void process1(const widget&amp;);     // 极力推荐：仅仅使用，不表达任何所有权
+void process2(widget*);           // 勉强可以：也是仅仅使用，但建议用引用替代
+void process3(unique_ptr&lt;widget&gt;); // 较少见/不推荐：强取豪夺所有权
+void process4(shared_ptr&lt;widget&gt;); // 具有传染性：共享所有权
+void process5(const unique_ptr&lt;widget&gt;&amp;); // 极不推荐：语义混乱
+void process6(const shared_ptr&lt;widget&gt;&amp;); // 极不推荐：容易意外延长生命周期
+</code></pre>
+<p><strong>为什么极力推荐第一种 <code>const widget&amp;</code>？</strong>
+因为它表达得最干净、最纯粹：
+* 我只需要一个 <code>widget</code> 对象。
+* 我只读，绝对不修改它。
+* 我完全不关心它是分配在栈上、堆上，还是由哪个智能指针管理的。
+* <strong>我完全不涉及任何所有权转移</strong>。</p>
+<p><strong>为什么 <code>unique_ptr</code> 作为参数用途很窄？</strong>
+当你把形参写成 <code>unique_ptr&lt;widget&gt;</code> 时，调用者必须写出 <code>process3(std::move(up));</code>。这表示这个函数要<strong>彻底接管</strong>对象的生命周期。大多数函数其实只需要“借用”对象，如果强行要求交出所有权，对调用方的侵入性极强。</p>
+<p><strong>警惕智能指针的“传染性”与“滥用”：</strong>
+如果一个函数只是为了读数据，却要求传入 <code>shared_ptr</code>（比如 <code>process6</code>），这就相当于告诉调用者：“为了调我这个函数，你最好把对象包成 <code>shared_ptr</code>”。久而久之，系统里到处都是没必要的共享所有权，甚至可能因为在函数内部保存了这个引用（如赋值给成员变量），从而意外地<strong>延长了对象的生命周期</strong>。</p>
+<hr />
+<h2>2. 返回值的最佳实践</h2>
+<p>返回类型不仅代表数据，更代表了<strong>所有权的流向</strong>。</p>
+<p>直接返回对象本身（即按值返回）往往是最自然、最推荐的做法之一。它清晰地表达了：
+* 这是一个全新产生的 Widget。
+* 调用者现在拥有这个对象。
+* 内部实现细节（栈分配、堆分配还是临时对象）对外部完全屏蔽。</p>
+<p>在现代 C++ 中，由于有 RVO（返回值优化）和移动语义（Move Semantics），直接返回大型对象通常也是非常高效的。</p>
+<blockquote>
+<p><strong>经验法则</strong>：如果对象支持移动构造，直接返回值是极佳的选择；如果对象不可移动且极大，再考虑返回智能指针或通过引用输出。</p>
+</blockquote>
+<hr />
+<h2>3. 为什么具名变量在函数内总是被视为左值？</h2>
+<p>为了防止开发者在函数体内<strong>无意中多次触发移动</strong>，C++ 规定：<strong>只要变量有名字，它就是左值。</strong></p>
+<p>看下面这个例子：</p>
+<pre><code class="language-cpp">void handle(Widget&amp;&amp; w) {
+    // 此时 w 是一个右值引用类型，但在 handle 体内，它是有名字的，因此它是左值！
+
+    log_widget(w);       // 第一次使用：如果 w 是右值，这里就被“偷”走了...
+    save_to_db(w);      // 第二次使用：如果前面被偷走，这里操作的就是一个空壳（Null state）！
+}
+</code></pre>
+<p>正因为编译器把它当成了左值，<code>log_widget(w)</code> 只会触发拷贝而不是移动。如果我们在函数内部真的想将它转移出去，<strong>必须显式调用</strong> <code>std::move(w)</code>，这保证了所有权转移是开发者深思熟虑后做出的决定。</p>
+<hr />
+<h2>4. 表达式的“类型”与“值类别”是两码事</h2>
+<p>这是一个极易混淆的概念：
+* <strong>类型 (Type)</strong>：决定了“这块内存是什么”（布局、成员、占多大字节、能调什么函数）。例如它是 <code>int</code>、<code>Widget</code> 还是 <code>Widget&amp;&amp;</code>。
+* <strong>值类别 (Value Category)</strong>：决定了“我们能怎么用这块内存”（是临时的还是持久的？能不能修改？能不能安全偷走资源？）。它被分为左值、右值、将亡值等。</p>
+<pre><code class="language-cpp">class Widget;
+Widget&amp;&amp; ref = Widget(); 
+</code></pre>
+<p>在上面的代码中，<code>ref</code> 的<strong>类型</strong>是“右值引用”，但 <code>ref</code> 这个表达式的<strong>值类别</strong>是“左值”。
+一句话总结：<strong>存在类型为右值引用的左值，也存在类型为右值引用的右值。</strong></p>
+<hr />
+<h2>5. 函数形参的初始化规则盘点</h2>
+<p>当传递参数时，编译器会结合表达式的<strong>类型</strong>和<strong>值类别</strong>来进行匹配。</p>
+<h3><code>void foo(Widget x);</code>（值传递）</h3>
+<p>形参是实参的<strong>独立副本</strong>。
+* <strong>特点</strong>：全匹配。无论传入左值还是右值，都能通过拷贝或移动来初始化形参。
+* <strong>本质</strong>：不挑剔值类别，只要求实参可拷贝/移动。通用但开销可能最大。</p>
+<h3><code>void foo1(Widget&amp; x);</code>（左值引用）</h3>
+<p>形参是实参的<strong>别名</strong>。
+* <strong>特点</strong>：<strong>只能绑定左值</strong>，绝对不能绑定右值（临时对象）。
+* <strong>补充</strong>：如果是常量左值引用 <code>const Widget&amp; x</code>，则既能绑定左值也能绑定右值，这是 C++ 为了常量安全所做的特例，也是最常用的只读传参方式。</p>
+<h3><code>void foo2(Widget&amp;&amp; x);</code>（右值引用）</h3>
+<p>专为移动语义设计。
+* <strong>特点</strong>：<strong>只能绑定右值</strong>，不能绑定普通左值。用于安全窃取实参资源。</p>
+<hr />
+<h2>6. 网关函数与并发安全 (Gateway Pattern)</h2>
+<p>在并发编程中，直接访问敏感资源是非常危险的。网关模式（Gateway）的思想核心在于：“你不能直接访问敏感资源，必须通过我，且满足我的条件（比如拿到锁、初始化好数据）才能进去。”</p>
+<p>来看看这段优美的代码：</p>
+<pre><code class="language-cpp">std::unique_lock&lt;std::mutex&gt; get_lock()
+{
+    extern std::mutex tex;
+    extern void prepare_data();
+
+    // 获取锁
+    std::unique_lock&lt;std::mutex&gt; lock(tex);
+
+    // 准备前置数据
+    prepare_data();
+
+    // 返回锁对象的所有权
+    return lock;
+}
+
+void process_data()
+{
+    extern void do_sth();
+
+    // 必须通过网关函数获取锁，才能继续执行
+    std::unique_lock&lt;std::mutex&gt; lk(std::move(get_lock()));
+
+    do_sth();
+}
+</code></pre>
+<p>在这里，<code>get_lock()</code> 就是一个标准的<strong>网关函数</strong>。
+* 它充当了“守门员”的角色。调用它强制要求你使用 <code>std::unique_lock</code> 来保护关键数据。
+* 它可以将前置逻辑（如 <code>prepare_data()</code>）封装在内部，防止调用者遗漏。
+* 配合不可拷贝、只能移动的 <code>unique_lock</code> 和移动语义，锁的所有权被安全、高效地传递到了 <code>process_data</code> 中。</p>
+<hr />
+<p>希望这篇笔记能帮你更清晰地理解 C++ 现代特性背后的设计哲学！</p>
+        </div>
+
+        <a href="index.html#blog" class="back-link">← 返回首页 (Back to Home)</a>
+    </div>
+
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+</body>
+</html>
