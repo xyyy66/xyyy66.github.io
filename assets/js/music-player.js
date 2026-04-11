@@ -3,25 +3,49 @@ $(function() {
     var playlist = window.MUSIC_PLAYLIST || [];
     var currentTrackIndex = 0;
     var isPlaying = false;
+    var $playlistList = $('#playlist-list');
+    var $playlistPanel = $('#playlist-panel');
 
+    // Populate playlist
     if (playlist.length > 0) {
-        loadTrack(currentTrackIndex);
+        playlist.forEach(function(song, index) {
+            var $li = $('<li></li>').text(song.name);
+            $li.on('click', function() {
+                currentTrackIndex = index;
+                loadTrack(currentTrackIndex, true);
+            });
+            $playlistList.append($li);
+        });
+        loadTrack(currentTrackIndex, false);
     }
 
-    function loadTrack(index) {
+    function loadTrack(index, autoPlay) {
         $audio.src = playlist[index].url;
         $('#track-name').text(playlist[index].name);
-        if (isPlaying) {
+        
+        // Highlight active song in playlist
+        $playlistList.find('li').removeClass('playing');
+        $playlistList.find('li').eq(index).addClass('playing');
+
+        if (autoPlay || isPlaying) {
             var playPromise = $audio.play();
             if (playPromise !== undefined) {
-                playPromise.catch(function(error) {
+                playPromise.then(function() {
+                    isPlaying = true;
+                    $('#play-btn').removeClass('fa-play').addClass('fa-pause');
+                }).catch(function(error) {
                     console.log("Autoplay prevented or interrupted", error);
+                    isPlaying = false;
+                    $('#play-btn').removeClass('fa-pause').addClass('fa-play');
                 });
             }
+        } else {
+            $('#play-btn').removeClass('fa-pause').addClass('fa-play');
         }
     }
 
     $('#play-btn').on('click', function() {
+        if (playlist.length === 0) return;
         if (isPlaying) {
             $audio.pause();
             $(this).removeClass('fa-pause').addClass('fa-play');
@@ -32,16 +56,13 @@ $(function() {
         isPlaying = !isPlaying;
     });
 
-    $('#next-btn').on('click', function() {
-        if (playlist.length === 0) return;
-        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-        loadTrack(currentTrackIndex);
+    // Playlist panel toggle
+    $('#playlist-btn').on('click', function() {
+        $playlistPanel.addClass('open');
     });
 
-    $('#prev-btn').on('click', function() {
-        if (playlist.length === 0) return;
-        currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-        loadTrack(currentTrackIndex);
+    $('#close-playlist-btn').on('click', function() {
+        $playlistPanel.removeClass('open');
     });
 
     $($audio).on('timeupdate', function() {
@@ -58,7 +79,9 @@ $(function() {
     });
 
     $($audio).on('ended', function() {
-        $('#next-btn').click();
+        if (playlist.length === 0) return;
+        currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+        loadTrack(currentTrackIndex, true);
     });
 
     $('#progress-container').on('click', function(e) {

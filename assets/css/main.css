@@ -2032,3 +2032,118 @@ input, select, textarea {
 	.music-player .volume-container input[type="range"]::-webkit-slider-thumb:hover {
 		transform: scale(1.3);
 	}
+
+/* Playlist Panel */
+
+	.playlist-panel {
+		position: fixed;
+		top: 0;
+		right: -380px;
+		width: 350px;
+		height: 100vh;
+		background: rgba(43, 43, 43, 0.4);
+		backdrop-filter: blur(15px);
+		-webkit-backdrop-filter: blur(15px);
+		border-left: 1px solid rgba(255, 255, 255, 0.15);
+		z-index: 10000;
+		transition: right 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+		display: flex;
+		flex-direction: column;
+		padding: 2em;
+		color: #ffffff;
+	}
+
+	.playlist-panel.open {
+		right: 0;
+	}
+
+	.playlist-header {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		margin-bottom: 2em;
+		flex-shrink: 0;
+	}
+
+	.playlist-header h3 {
+		font-family: "Great Vibes", cursive;
+		font-weight: 400;
+		font-size: 2.5em;
+		margin: 0;
+		color: #ffffff;
+		text-transform: none;
+		letter-spacing: 0;
+	}
+
+	.playlist-header button {
+		width: 2.5em !important;
+		height: 2.5em !important;
+		line-height: 2.5em !important;
+		border-radius: 50% !important;
+		padding: 0 !important;
+		min-width: 0 !important;
+		border: 1px solid rgba(255, 255, 255, 0.3) !important;
+		background-color: transparent !important;
+		display: flex !important;
+		justify-content: center !important;
+		align-items: center !important;
+		transition: all 0.3s ease !important;
+	}
+
+	.playlist-header button:hover {
+		background-color: rgba(255, 255, 255, 0.15) !important;
+		transform: scale(1.05);
+	}
+
+	.playlist-header button.icon:before {
+		margin-right: 0 !important;
+	}
+
+	.playlist-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		overflow-y: auto;
+		flex-grow: 1;
+		padding-right: 10px;
+	}
+
+	/* Custom Scrollbar for playlist */
+	.playlist-list::-webkit-scrollbar {
+		width: 4px;
+	}
+	.playlist-list::-webkit-scrollbar-track {
+		background: transparent;
+	}
+	.playlist-list::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.3);
+		border-radius: 2px;
+	}
+
+	.playlist-list li {
+		padding: 1em 0.5em;
+		border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+		cursor: pointer;
+		font-family: "Merriweather", serif;
+		font-size: 0.9em;
+		color: rgba(255, 255, 255, 0.6);
+		transition: all 0.2s ease;
+		line-height: 1.4;
+		word-break: break-word;
+	}
+
+	.playlist-list li:last-child {
+		border-bottom: none;
+	}
+
+	.playlist-list li:hover {
+		color: #ffffff;
+		background: rgba(255, 255, 255, 0.05);
+		padding-left: 1em;
+	}
+
+	.playlist-list li.playing {
+		color: #cb565a;
+		font-style: italic;
+		font-weight: 700;
+	}
