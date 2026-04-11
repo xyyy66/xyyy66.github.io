@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的第一篇博客 - Xu Yan's Blog</title>
+    <title>{{TITLE}} - Xu Yan's Blog</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
     
     <style>
         :root {
-            --bg-color: #faf2e2; /* 米黄色底色 (Beige/Cream) */
+            --bg-color: #f7efdd; /* 米黄色底色 (Beige/Cream) */
             --text-color: #333333;
             --link-color: #a87b51;
             --meta-color: #888888;
@@ -126,43 +126,12 @@
 
     <div class="container">
         <header>
-            <h1>我的第一篇博客 (My First Blog Post)</h1>
-            <div class="meta">发布于 2026年4月11日 • 预计阅读时间: 3 分钟</div>
+            <h1>{{TITLE}}</h1>
+            <div class="meta">发布于 {{DATE}} • 预计阅读时间: {{READ_TIME}} 分钟</div>
         </header>
 
         <div class="content">
-            <p>你好！欢迎来到我的博客。这篇博文展示了如何使用高雅的米黄色背景（Beige Background）和衬线字体（Serif Fonts）来打造一种具有高级感的阅读体验。</p>
-            
-            <p>Hello! Welcome to my blog. This post demonstrates how to use an elegant beige background combined with serif fonts to create a premium reading experience. The combination of <em>Merriweather</em> and <em>Noto Serif SC</em> works beautifully across both languages.</p>
-
-            <h2>代码高亮演示 (Code Highlighting Demo)</h2>
-            <p>下面是一个使用 Python 编写的简单示例，我们使用 Prism.js 进行多语言的语法高亮：</p>
-
-<pre><code class="language-python"># Python Code Example
-def fibonacci(n):
-    """
-    Generate Fibonacci sequence up to n
-    """
-    sequence = [0, 1]
-    while len(sequence) < n:
-        sequence.append(sequence[-1] + sequence[-2])
-    return sequence
-
-print("Fibonacci sequence of 10:", fibonacci(10))
-</code></pre>
-
-            <p>同样的，我们也支持 JavaScript，HTML，CSS 等多种语言的高亮显示：</p>
-
-<pre><code class="language-javascript">// JavaScript Code Example
-const greet = (name) => {
-    console.log(`Hello, ${name}! Welcome to the elegant blog template.`);
-};
-
-greet('Xu Yan');
-</code></pre>
-
-            <h2>未来计划 (Future Plans)</h2>
-            <p>在这个博客里，我将记录我的学习笔记、开发经验以及生活中的感悟。你可以轻松地在这个模板中添加新的标题和段落，所有的样式都已经为你准备好了。</p>
+{{CONTENT}}
         </div>
 
         <a href="index.html#blog" class="back-link">← 返回首页 (Back to Home)</a>
