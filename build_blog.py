@@ -47,7 +47,16 @@ def convert_md_to_html(md_filepath):
 
     # 将 Markdown 转换为 HTML
     # fenced_code 插件用于支持 ```python 这种代码块
-    html_content = markdown.markdown(md_content, extensions=['fenced_code'])
+    # pymdownx.arithmatex 用于支持 LaTeX 数学公式
+    html_content = markdown.markdown(
+        md_content, 
+        extensions=['fenced_code', 'pymdownx.arithmatex'],
+        extension_configs={
+            'pymdownx.arithmatex': {
+                'generic': True
+            }
+        }
+    )
 
     # 读取模板
     script_dir = os.path.dirname(os.path.abspath(__file__))

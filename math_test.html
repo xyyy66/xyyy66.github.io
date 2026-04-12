@@ -3,18 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{TITLE}} - Xu Yan's Blog</title>
-    <!-- Fonts -->
+    <title>Math Test - Xu Yan's Blog</title>
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600;900&display=swap" rel="stylesheet">
     
-    <!-- Prism.js for syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     
     <style>
         :root {
-            --bg-color: #f7efdd; /* 米黄色底色 (Beige/Cream) */
+            --bg-color: #f7efdd; /* 恢复你的米黄色底色 */
             --text-color: #333333;
             --link-color: #a87b51;
             --meta-color: #888888;
@@ -61,16 +62,16 @@
             font-weight: 600;
         }
 
-        .content h3 {
-            font-size: 1.4em;
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-weight: 600;
-        }
-
         .content p {
             margin-bottom: 20px;
             text-align: justify;
+        }
+
+        /* 优化公式容器，防止长公式撑破布局 */
+        .arithmatex {
+            margin: 1.5em 0;
+            overflow-x: auto;
+            padding: 0.5em 0;
         }
 
         .content a {
@@ -85,16 +86,12 @@
             border-bottom: 1px solid #7a5839;
         }
 
-        /* Code block adjustments */
+        /* 代码块样式 */
         pre[class*="language-"] {
             border-radius: 8px;
             margin: 30px 0;
             font-family: 'Courier New', Courier, monospace;
             font-size: 15px;
-        }
-
-        code[class*="language-"], pre[class*="language-"] {
-            font-family: 'Courier New', Courier, monospace;
         }
 
         .back-link {
@@ -111,14 +108,9 @@
             color: #7a5839;
         }
 
-        /* Responsive */
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            .container {
-                padding: 40px 20px;
-            }
+            h1 { font-size: 2em; }
+            .container { padding: 40px 20px; }
         }
     </style>
 </head>
@@ -126,33 +118,57 @@
 
     <div class="container">
         <header>
-            <h1>{{TITLE}}</h1>
-            <div class="meta">发布于 {{DATE}} • 预计阅读时间: {{READ_TIME}} 分钟</div>
+            <h1>Math Test</h1>
+            <div class="meta">发布于 2026年04月12日 • 预计阅读时间: 3 分钟</div>
         </header>
 
         <div class="content">
-{{CONTENT}}
+            <p>This is a test post to demonstrate KaTeX math rendering, which provides thick and full equations!</p>
+            
+            <h2>Inline Math</h2>
+            <p>Here is an inline equation: <span class="arithmatex">\(f(x) = \int_{-\infty}^\infty \hat f(\xi)\,e^{2 \pi i \xi x} \,d\xi\)</span>. 
+            Notice how the subscripts like <span class="arithmatex">\(A_1\)</span> and <span class="arithmatex">\(B_2\)</span> are perfectly rendered.</p>
+            
+            <h2>Display Math</h2>
+            <p>Here is a block equation:</p>
+            <div class="arithmatex">
+            \[
+            \mathbf{V}_1 \times \mathbf{V}_2 =  \begin{vmatrix} 
+            \mathbf{i} & \mathbf{j} & \mathbf{k} \\
+            \frac{\partial X}{\partial u} &  \frac{\partial Y}{\partial u} & 0 \\
+            \frac{\partial X}{\partial v} &  \frac{\partial Y}{\partial v} & 0
+            \end{vmatrix}
+            \]
+            </div>
+
+            <p>Another display equation using <code>\[ ... \]</code>:</p>
+            <div class="arithmatex">
+            \[
+            \mathcal{L}_{MLM} = -\sum_{i=1}^N \log P(x_i | x_{\backslash i}; \theta)
+            \]
+            </div>
+            
+            <p>Enjoy your math blogging!</p>
         </div>
 
         <a href="index.html#blog" class="back-link">← 返回首页 (Back to Home)</a>
     </div>
 
-    <!-- Prism.js for syntax highlighting -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
 
-    <!-- KaTeX for math rendering -->
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js" integrity="sha384-XjKyOOlGwcjNTAIQHIpgOno0Hl1YQqzUOEleOLALmuqehneUG+vnGctmPX6CXz0B" crossorigin="anonymous"></script>
-    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js" integrity="sha384-+VBxd3r6XgURycqtZ117b0lOgwO/amQ3FUzE1Zid8sGZfv6igv80BTL/GWBXYWGe" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // 这个函数会扫描整个 body 并渲染数学公式
             renderMathInElement(document.body, {
                 delimiters: [
-                    {left: "\\[", right: "\\]", display: true},
-                    {left: "\\(", right: "\\)", display: false}
+                    {left: '$$', right: '$$', display: true},
+                    {left: '\\[', right: '\\]', display: true},
+                    {left: '$', right: '$', display: false},
+                    {left: '\\(', right: '\\)', display: false}
                 ],
                 throwOnError : false
             });

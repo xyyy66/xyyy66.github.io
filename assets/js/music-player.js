@@ -33,14 +33,17 @@ $(function() {
                 playPromise.then(function() {
                     isPlaying = true;
                     $('#play-btn').removeClass('fa-play').addClass('fa-pause');
+                    $('#audio-wave').addClass('playing');
                 }).catch(function(error) {
                     console.log("Autoplay prevented or interrupted", error);
                     isPlaying = false;
                     $('#play-btn').removeClass('fa-pause').addClass('fa-play');
+                    $('#audio-wave').removeClass('playing');
                 });
             }
         } else {
             $('#play-btn').removeClass('fa-pause').addClass('fa-play');
+            $('#audio-wave').removeClass('playing');
         }
     }
 
@@ -49,9 +52,11 @@ $(function() {
         if (isPlaying) {
             $audio.pause();
             $(this).removeClass('fa-pause').addClass('fa-play');
+            $('#audio-wave').removeClass('playing');
         } else {
             $audio.play();
             $(this).removeClass('fa-play').addClass('fa-pause');
+            $('#audio-wave').addClass('playing');
         }
         isPlaying = !isPlaying;
     });
