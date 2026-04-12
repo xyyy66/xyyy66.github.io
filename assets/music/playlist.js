@@ -16,16 +16,16 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/匆匆那年.m4a"
   },
   {
-    "name": "少女",
-    "url": "assets/music/少女.m4a"
+    "name": "灰色轨迹",
+    "url": "assets/music/灰色轨迹.m4a"
   },
   {
     "name": "无所谓",
     "url": "assets/music/无所谓.m4a"
   },
   {
-    "name": "路小雨",
-    "url": "assets/music/路小雨.m4a"
+    "name": "破茧",
+    "url": "assets/music/破茧.m4a"
   },
   {
     "name": "Dawn",
@@ -56,8 +56,8 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/月光.m4a"
   },
   {
-    "name": "Your Man",
-    "url": "assets/music/Your Man.m4a"
+    "name": "传奇",
+    "url": "assets/music/传奇.m4a"
   },
   {
     "name": "愿与愁",
@@ -92,7 +92,7 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/晴天.m4a"
   },
   {
-    "name": "进步小曲，我太想进步了，鸳鸯戏",
+    "name": "鸳鸯戏",
     "url": "assets/music/进步小曲，我太想进步了，鸳鸯戏.m4a"
   },
   {
@@ -100,7 +100,7 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/我好想你.m4a"
   },
   {
-    "name": "乡村路带我回家",
+    "name": "Country Road",
     "url": "assets/music/乡村路带我回家.m4a"
   },
   {
@@ -118,10 +118,6 @@ window.MUSIC_PLAYLIST = [
   {
     "name": "See You Again",
     "url": "assets/music/See You Again.m4a"
-  },
-  {
-    "name": "喀秋莎",
-    "url": "assets/music/喀秋莎.m4a"
   },
   {
     "name": "光阴副本",
