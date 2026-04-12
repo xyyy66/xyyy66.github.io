@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>我的第一篇博客 - Xu Yan's Blog</title>
+    <title>加载中... - Xu Yan's Blog</title>
+    
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,9 +13,14 @@
     <!-- Prism.js for syntax highlighting -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
     
+    <!-- KaTeX for math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <!-- Texmath CSS for math layout -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@1.0.0/css/texmath.css">
+
     <style>
         :root {
-            --bg-color: #faf2e2; /* 米黄色底色 (Beige/Cream) */
+            --bg-color: #faf2e2; /* 米黄色底色 */
             --text-color: #333333;
             --link-color: #a87b51;
             --meta-color: #888888;
@@ -34,6 +40,7 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 60px 20px;
+            min-height: 100vh;
         }
 
         header {
@@ -85,6 +92,22 @@
             border-bottom: 1px solid #7a5839;
         }
 
+        .content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .content blockquote {
+            border-left: 4px solid var(--link-color);
+            margin: 20px 0;
+            padding: 15px 20px;
+            color: #666;
+            font-style: italic;
+            background: rgba(168, 123, 81, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+
         /* Code block adjustments */
         pre[class*="language-"] {
             border-radius: 8px;
@@ -100,6 +123,7 @@
         .back-link {
             display: inline-block;
             margin-top: 60px;
+            margin-bottom: 20px;
             color: var(--link-color);
             text-decoration: none;
             font-weight: bold;
@@ -111,68 +135,114 @@
             color: #7a5839;
         }
 
-        /* Responsive */
+        #status {
+            text-align: center;
+            margin-top: 100px;
+            color: var(--meta-color);
+            font-style: italic;
+        }
+
+        /* Make KaTeX display math look better */
+        .katex-display {
+            margin: 1.5em 0 !important;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding-bottom: 5px;
+        }
+
         @media (max-width: 768px) {
-            h1 {
-                font-size: 2em;
-            }
-            .container {
-                padding: 40px 20px;
-            }
+            h1 { font-size: 2em; }
+            .container { padding: 40px 20px; }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <header>
-            <h1>我的第一篇博客 (My First Blog Post)</h1>
-            <div class="meta">发布于 2026年4月11日 • 预计阅读时间: 3 分钟</div>
+        <div id="status">正在准备渲染引擎... (Initializing...)</div>
+
+        <header id="header" style="display: none;">
+            <h1 id="post-title"></h1>
+            <div class="meta" id="post-meta"></div>
         </header>
 
-        <div class="content">
-            <p>你好！欢迎来到我的博客。这篇博文展示了如何使用高雅的米黄色背景（Beige Background）和衬线字体（Serif Fonts）来打造一种具有高级感的阅读体验。</p>
-            
-            <p>Hello! Welcome to my blog. This post demonstrates how to use an elegant beige background combined with serif fonts to create a premium reading experience. The combination of <em>Merriweather</em> and <em>Noto Serif SC</em> works beautifully across both languages.</p>
-
-            <h2>代码高亮演示 (Code Highlighting Demo)</h2>
-            <p>下面是一个使用 Python 编写的简单示例，我们使用 Prism.js 进行多语言的语法高亮：</p>
-
-<pre><code class="language-python"># Python Code Example
-def fibonacci(n):
-    """
-    Generate Fibonacci sequence up to n
-    """
-    sequence = [0, 1]
-    while len(sequence) < n:
-        sequence.append(sequence[-1] + sequence[-2])
-    return sequence
-
-print("Fibonacci sequence of 10:", fibonacci(10))
-</code></pre>
-
-            <p>同样的，我们也支持 JavaScript，HTML，CSS 等多种语言的高亮显示：</p>
-
-<pre><code class="language-javascript">// JavaScript Code Example
-const greet = (name) => {
-    console.log(`Hello, ${name}! Welcome to the elegant blog template.`);
-};
-
-greet('Xu Yan');
-</code></pre>
-
-            <h2>未来计划 (Future Plans)</h2>
-            <p>在这个博客里，我将记录我的学习笔记、开发经验以及生活中的感悟。你可以轻松地在这个模板中添加新的标题和段落，所有的样式都已经为你准备好了。</p>
-        </div>
+        <div class="content" id="content"></div>
 
         <a href="index.html#blog" class="back-link">← 返回首页 (Back to Home)</a>
     </div>
 
-    <!-- Prism.js for syntax highlighting -->
+    <!-- Prism.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+
+    <!-- Markdown-it, KaTeX, and Texmath plugin -->
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it-texmath@1.0.0/texmath.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const file = urlParams.get('file');
+            const statusEl = document.getElementById('status');
+            
+            if (!file) {
+                statusEl.innerHTML = '<div style="color: #d32f2f;">错误：未指定博文文件 (Error: No file specified).</div>';
+                return;
+            }
+
+            try {
+                // Fetch the markdown file
+                const response = await fetch(file);
+                if (!response.ok) throw new Error(`无法找到文件: ${file}`);
+                const text = await response.text();
+
+                // Initialize markdown-it with texmath
+                // Note: texmath needs to be used BEFORE calling md.render
+                const md = window.markdownit({
+                    html: true,
+                    linkify: true,
+                    typographer: true
+                }).use(texmath, {
+                    engine: katex,
+                    delimiters: 'dollars',
+                    katexOptions: { macros: { "\\RR": "\\mathbb{R}" } }
+                });
+
+                // Extract title (H1)
+                const lines = text.split('\n');
+                let title = "未命名博文";
+                let contentText = text;
+                if (lines[0].trim().startsWith('# ')) {
+                    title = lines[0].trim().substring(2).trim();
+                    contentText = lines.slice(1).join('\n');
+                }
+
+                // Update page metadata
+                document.title = `${title} - Xu Yan's Blog`;
+                document.getElementById('post-title').textContent = title;
+                document.getElementById('post-meta').textContent = `预计阅读时间: ${Math.max(1, Math.ceil(text.length / 400))} 分钟`;
+
+                // Render content
+                document.getElementById('content').innerHTML = md.render(contentText);
+                
+                // Show content
+                statusEl.style.display = 'none';
+                document.getElementById('header').style.display = 'block';
+                
+                // Trigger code highlighting
+                if (window.Prism) {
+                    Prism.highlightAll();
+                }
+
+            } catch (error) {
+                console.error(error);
+                statusEl.innerHTML = `<div style="color: #d32f2f;">加载失败 (Loading Failed): ${error.message}</div>`;
+            }
+        });
+    </script>
 </body>
 </html>
