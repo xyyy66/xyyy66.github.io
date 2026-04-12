@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加载中... - Xu Yan's Blog</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital,wght@0,300;0,400;0,700;1,300;1,400&family=Noto+Serif+SC:wght@300;400;600;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.css" rel="stylesheet" />
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/markdown-it-texmath@1.0.0/css/texmath.css">
+
+    <style>
+        :root {
+            --bg-color: #faf2e2;
+            --text-color: #2c2c2c;
+            --link-color: #a87b51;
+            --meta-color: #888888;
+            --code-bg: #1d1f21;
+            --sidebar-width: 260px;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Merriweather', 'Noto Serif SC', serif;
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+            font-size: 18px;
+            scroll-behavior: smooth;
+        }
+
+        /* 布局：引入左右分栏以支持目录 */
+        .layout-wrapper {
+            display: flex;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            gap: 40px;
+        }
+
+        .main-content {
+            flex: 1;
+            max-width: 800px;
+            min-height: 100vh;
+        }
+
+        /* 侧边栏：自动生成的目录 (TOC) */
+        .sidebar {
+            width: var(--sidebar-width);
+            position: sticky;
+            top: 40px;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            padding-left: 20px;
+            border-left: 1px solid rgba(168, 123, 81, 0.2);
+            font-family: system-ui, -apple-system, sans-serif;
+        }
+
+        .sidebar h3 {
+            font-size: 1.1em;
+            margin-top: 0;
+            color: var(--meta-color);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .toc-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        .toc-list li { margin-bottom: 10px; }
+        .toc-list a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+            display: block;
+        }
+        .toc-list a:hover { color: var(--link-color); }
+        .toc-h2 { margin-left: 0; font-weight: 600; }
+        .toc-h3 { margin-left: 15px; font-size: 0.95em; }
+
+        header { margin-bottom: 50px; }
+        h1 { font-size: 2.5em; font-weight: 600; margin-bottom: 15px; line-height: 1.3; }
+        .meta { color: var(--meta-color); font-size: 0.9em; font-style: italic; }
+        .tags { margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap; }
+        .tag { background: rgba(168, 123, 81, 0.1); color: var(--link-color); padding: 2px 10px; border-radius: 12px; font-size: 0.85em; }
+
+        .content h2 { font-size: 1.8em; margin: 50px 0 20px; font-weight: 600; padding-bottom: 10px; border-bottom: 1px solid rgba(0,0,0,0.05); }
+        .content h3 { font-size: 1.4em; margin: 40px 0 15px; font-weight: 600; }
+        .content p { margin-bottom: 20px; text-align: justify; }
+        .content a { color: var(--link-color); text-decoration: none; border-bottom: 1px dotted var(--link-color); transition: all 0.3s ease; }
+        .content a:hover { color: #7a5839; border-bottom-style: solid; }
+        
+        .content img {
+            max-width: 100%;
+            border-radius: 8px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            cursor: zoom-in;
+        }
+
+        .content blockquote {
+            border-left: 4px solid var(--link-color);
+            margin: 20px 0;
+            padding: 15px 20px;
+            color: #555;
+            background: rgba(168, 123, 81, 0.05);
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* 强化代码块样式 */
+        pre[class*="language-"] {
+            border-radius: 8px;
+            margin: 30px 0;
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+            font-size: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        code[class*="language-"], pre[class*="language-"] {
+            font-family: 'Fira Code', 'Courier New', Courier, monospace;
+        }
+
+        .katex-display { overflow-x: auto; overflow-y: hidden; padding: 10px 0; }
+        #status { text-align: center; margin-top: 100px; color: var(--meta-color); font-style: italic; }
+
+        /* 返回首页按钮样式 */
+        .back-link {
+            display: inline-block;
+            margin-top: 60px;
+            margin-bottom: 20px;
+            color: var(--link-color);
+            text-decoration: none;
+            font-weight: bold;
+            font-family: system-ui, -apple-system, sans-serif;
+            transition: color 0.3s ease;
+        }
+
+        .back-link:hover {
+            color: #7a5839;
+            border-bottom: none; /* 覆盖全局的 a 标签底边框 */
+        }
+        /* 移动端适配 */
+        @media (max-width: 1024px) {
+            .sidebar { display: none; /* 移动端隐藏侧边栏 */ }
+            .layout-wrapper { justify-content: center; }
+        }
+        @media (max-width: 768px) {
+            body { font-size: 16px; }
+            h1 { font-size: 2em; }
+            .layout-wrapper { padding: 20px 15px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="status">正在加载并解析宇宙的真理... (Initializing...)</div>
+
+    <div class="layout-wrapper" id="main-layout" style="display: none;">
+        <main class="main-content">
+            <header id="header">
+                <h1 id="post-title"></h1>
+                <div class="meta" id="post-meta"></div>
+                <div class="tags" id="post-tags"></div>
+            </header>
+
+            <article class="content" id="content"></article>
+
+          <a href="index.html#blog" class="back-link">← Back to Home</a>
+        </main>
+
+        <aside class="sidebar">
+            <h3>文章目录</h3>
+            <ul class="toc-list" id="toc-container"></ul>
+        </aside>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it@13.0.2/dist/markdown-it.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/markdown-it-texmath@1.0.0/texmath.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/medium-zoom@1.0.8/dist/medium-zoom.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/toolbar/prism-toolbar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/copy-to-clipboard/prism-copy-to-clipboard.min.js"></script>
+
+    <script>
+        // 配置 Prism 自动加载语言包的路径 (非常重要：以后无论写什么语言的高亮，都不用再手动加 JS 文件了)
+        Prism.plugins.autoloader.languages_path = 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/';
+
+        document.addEventListener("DOMContentLoaded", async function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            // 支持 ?file=xxx.md 或直接 ?xxx
+            const file = urlParams.get('file') || urlParams.keys().next().value; 
+            const statusEl = document.getElementById('status');
+            
+            if (!file) {
+                statusEl.innerHTML = '<div style="color: #d32f2f;">错误：未指定博文文件。请在 URL 后添加 ?file=your-post.md</div>';
+                return;
+            }
+
+            // 确保文件有 .md 后缀
+            const fetchUrl = file.endsWith('.md') ? file : `${file}.md`;
+
+            try {
+                const response = await fetch(fetchUrl);
+                if (!response.ok) throw new Error(`文件不存在 (HTTP ${response.status})`);
+                const rawText = await response.text();
+
+                // 1. 解析 YAML Front Matter (标准博客元数据)
+                let contentText = rawText;
+                let metadata = { title: "未命名博文", date: "", tags: [] };
+                
+                const frontMatterMatch = rawText.match(/^---\n([\s\S]*?)\n---\n/);
+                if (frontMatterMatch) {
+                    try {
+                        const parsedMeta = jsyaml.load(frontMatterMatch[1]);
+                        metadata = { ...metadata, ...parsedMeta };
+                        contentText = rawText.slice(frontMatterMatch[0].length);
+                    } catch (e) {
+                        console.warn("Front Matter 解析失败", e);
+                    }
+                } else {
+                    // 降级方案：如果没有 YAML，提取第一个一级标题作为标题
+                    const titleMatch = contentText.match(/^#\s+(.*)$/m);
+                    if (titleMatch) {
+                        metadata.title = titleMatch[1];
+                        contentText = contentText.replace(/^#\s+.*$/m, ''); // 移除内容中的大标题
+                    }
+                }
+
+                // 2. 更新页面信息
+                document.title = `${metadata.title} - Xu Yan's Blog`;
+                document.getElementById('post-title').textContent = metadata.title;
+                
+                // 渲染标签和元数据
+                if (metadata.tags && metadata.tags.length > 0) {
+                    document.getElementById('post-tags').innerHTML = metadata.tags.map(t => `<span class="tag">#${t}</span>`).join('');
+                }
+                
+                const wordCount = contentText.trim().length;
+                const readTime = Math.max(1, Math.ceil(wordCount / 400));
+                let metaText = metadata.date ? `发布于 ${metadata.date} | ` : '';
+                document.getElementById('post-meta').textContent = `${metaText}字数: ~${wordCount} | 预计阅读: ${readTime} 分钟`;
+
+                // 3. 配置并执行 Markdown 渲染
+                const md = window.markdownit({
+                    html: true,       // 允许直接写 HTML 标签
+                    linkify: true,    // 自动识别链接
+                    typographer: true // 优化排版（如破折号、引号）
+                }).use(texmath, {
+                    engine: katex,
+                    delimiters: 'dollars',
+                    katexOptions: { throwOnError: false, macros: { "\\RR": "\\mathbb{R}" } }
+                });
+
+                document.getElementById('content').innerHTML = md.render(contentText);
+
+                // 4. 自动生成文章侧边栏目录 (TOC) 并为标题添加锚点
+                const contentDiv = document.getElementById('content');
+                const headings = contentDiv.querySelectorAll('h2, h3');
+                const tocContainer = document.getElementById('toc-container');
+                
+                if (headings.length > 0) {
+                    headings.forEach((heading, index) => {
+                        // 生成唯一 ID
+                        const anchorId = `heading-${index}`;
+                        heading.id = anchorId;
+                        
+                        // 创建目录项
+                        const li = document.createElement('li');
+                        li.className = heading.tagName.toLowerCase() === 'h2' ? 'toc-h2' : 'toc-h3';
+                        li.innerHTML = `<a href="#${anchorId}">${heading.textContent}</a>`;
+                        tocContainer.appendChild(li);
+                    });
+                } else {
+                    document.querySelector('.sidebar').style.display = 'none'; // 没有标题则隐藏侧边栏
+                }
+
+                // 5. 显示布局
+                statusEl.style.display = 'none';
+                document.getElementById('main-layout').style.display = 'flex';
+                
+                // 6. 激活高级交互插件
+                if (window.Prism) Prism.highlightAll(); // 代码高亮与自动加载
+                mediumZoom('.content img', { margin: 24, background: '#faf2e2e6' }); // 图片点击放大
+
+            } catch (error) {
+                console.error(error);
+                statusEl.innerHTML = `<div style="color: #d32f2f;">加载失败: ${error.message}</div>`;
+            }
+        });
+    </script>
+</body>
+</html>
