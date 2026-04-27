@@ -8,8 +8,8 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/光辉岁月.m4a"
   },
   {
-    "name": "反方向的钟",
-    "url": "assets/music/反方向的钟.m4a"
+    "name": "Mystery of Love",
+    "url": "assets/music/Mystery of Love.m4a"
   },
   {
     "name": "匆匆那年",
@@ -20,8 +20,8 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/灰色轨迹.m4a"
   },
   {
-    "name": "无所谓",
-    "url": "assets/music/无所谓.m4a"
+    "name": "千千阙歌",
+    "url": "assets/music/千千阙歌.m4a"
   },
   {
     "name": "破茧",
@@ -76,12 +76,12 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/爱错.m4a"
   },
   {
-    "name": "此曲献给不想活了的你",
-    "url": "assets/music/此曲献给不想活了的你.m4a"
+    "name": "李白",
+    "url": "assets/music/李白.m4a"
   },
   {
-    "name": "爱情讯息",
-    "url": "assets/music/爱情讯息.m4a"
+    "name": "As Long As You Love Me",
+    "url": "assets/music/As Long As You Love Me.m4a"
   },
   {
     "name": "Merry Christmas Mr.Lawrence",
@@ -100,8 +100,8 @@ window.MUSIC_PLAYLIST = [
     "url": "assets/music/我好想你.m4a"
   },
   {
-    "name": "Country Road",
-    "url": "assets/music/乡村路带我回家.m4a"
+    "name": "Always Remember Us This Way",
+    "url": "assets/music/Always Remember Us This Way.m4a"
   },
   {
     "name": "剑心",
